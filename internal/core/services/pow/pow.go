@@ -44,10 +44,15 @@ func (ps *PowService) Create(ctx context.Context) (*models.PowTask, error) {
 	case task := <-ps.taskCh:
 		task.CreatedAt = time.Now().UTC()
 		if err := ps.powRepo.Create(ctx, task); err != nil {
+			ps.log.Error("Task creation problem", zap.Error(err))
 			return nil, err
 		}
 		return task, nil
 	case <-time.After(ps.c.EmissionDelay):
+		ps.log.Error(
+			`Task was not ready for a long time 
+You should to think about increasing emission size and/or lowering emission delay`,
+		)
 		return nil, ErrCreateFailed
 	}
 }
@@ -63,6 +68,7 @@ func (ps *PowService) preparePowTask() (*models.PowTask, error) {
 
 func (ps *PowService) Verify(ctx context.Context, result *models.PowResult) error {
 	if _, err := ps.powRepo.Get(ctx, result.Hash); err != nil {
+		ps.log.Error("Result is't not incorrect", zap.Error(err))
 		return ErrWrongResult
 	}
 	return nil
