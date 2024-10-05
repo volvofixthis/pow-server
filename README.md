@@ -54,6 +54,7 @@ This parts can be easily replaced:
 - ports.PowRepostory
 - ports.PowService
 - Anything in infra  
+
 DI is controlled by uber fx
 
 ### Possible improvements
