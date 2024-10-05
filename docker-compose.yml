@@ -1,0 +1,32 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      - API_ADDRESS=0.0.0.0:8200
+      - TCP_ADDRESS=0.0.0.0:8201
+      - POW_TIMEOUT=2s
+      - POW_ITERATION=2
+      - POW_MEMORY=524288
+      - EMISSION_SIZE=10
+      - EMISSION_DELAY=1s
+      - CON_READ_TIMEOUT=3s
+      - CON_WRITE_TIMEOUT=3s
+      - WORKER_POOL=12
+      - CON_QUEUE=256
+    ports:
+      - "8200:8200"  # Map the API port
+      - "8201:8201"  # Map the TCP port
+  client:
+    build:
+      context: .
+    entrypoint: ["/tcpclient"]  # Override entrypoint for client
+    environment:
+      - TCP_ADDRESS=server:8201
+    depends_on:
+      - server
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 10s
+        window: 30s
