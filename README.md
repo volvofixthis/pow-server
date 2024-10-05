@@ -23,7 +23,7 @@ Client sends hello message, which indicates state of challenge-response:
     "state": 0
 }
 ```
-Server response with challenge:  
+Server responds with challenge:  
 ```json
 {
     "text": "You miss 100% of the shots you don’t take.",
@@ -38,7 +38,7 @@ Client responds with solution:
     "hash": "base64"
 }
 ```
-Server sends response with passage:  
+If result is right server sends response with passage:  
 ```json
 {
     "text": "something"
