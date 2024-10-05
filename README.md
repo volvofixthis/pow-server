@@ -53,7 +53,7 @@ This parts can be easily replaced:
 - ports.PassageService
 - ports.PowRepostory
 - ports.PowService
-- Anything in infra
+- Anything in infra  
 DI is controlled by uber fx
 
 ### Possible improvements
